@@ -11,6 +11,7 @@ import { FaUserAlt } from "react-icons/fa";
 import Button from "./Button";
 import useAuthModal from "@/hooks/useAuthModal";
 import { useUser } from "@/hooks/useUser";
+import toast from "react-hot-toast";
 
 
 interface HeaderProps {
@@ -29,11 +30,15 @@ const Header: React.FC<HeaderProps> = ({
     const { user } = useUser();
 
     const handleLogout =  async () => {
-        const error = await supabaseClient.auth.signOut();
+        const { error } = await supabaseClient.auth.signOut();
         //reset playing song
         router.refresh();
         
-        if (error) console.log(error)
+        if (error) {
+            toast.error(error.message);
+        } else {
+            toast.success("You are now logged out!");
+        }
     }
     return (
         <div className={twMerge(`h-fit bg-gradient-to-b from-emerald-800 p-6`, className)}>
