@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 import AuthModal from "@/components/AuthModal";
+import UplaodModal from "@/components/UploadModal";
 
 
 const ModalProvider = () => {
@@ -17,6 +18,7 @@ const ModalProvider = () => {
     return (
         <>
             <AuthModal />
+            <UplaodModal />
         </>
     );
 } 
