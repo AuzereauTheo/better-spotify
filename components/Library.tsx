@@ -3,17 +3,25 @@
 import useAuthModal from "@/hooks/useAuthModal";
 import useUploadModal from "@/hooks/useUploadModal";
 import { useUser } from "@/hooks/useUser";
+import { Song } from "@/types";
 //LIB
 import { AiOutlinePlus } from "react-icons/ai";
+import { FaKey } from "react-icons/fa";
 import { TbPlaylist } from "react-icons/tb";
+import Button from "./Button";
 
-const Library = () => {
+interface LibraryProps {
+    songs: Song[];
+}
+
+const Library: React.FC<LibraryProps>= ({
+    songs
+}) => {
     const authModal = useAuthModal();
     const uploadModal = useUploadModal();
     const { user } = useUser();
     
     const onClick = () => {
-        if(!user) return authModal.onOpen();
         //check subcription
         return uploadModal.onOpen();
     }
@@ -28,14 +36,29 @@ const Library = () => {
                     />
                     <p className="text-neutral-400 font-medium text-md">Your library</p>
                 </div>
-                <AiOutlinePlus 
-                    onClick={onClick} 
-                    size={20} 
-                    className="text-neutral-400 cursor-pointer hover:text-white transition"
-                />
+                {user && 
+                    <AiOutlinePlus 
+                        onClick={onClick} 
+                        size={20} 
+                        className="text-neutral-300 cursor-pointer hover:text-white transition"
+                    />
+                }
+                
             </div>
             <div className="flex flex-col gap-y-2 mt-4 px-3">
-                List of songs
+                {songs.map((item, key) => (
+                    <div key={key}>{item.title}{key}</div>
+                ))}
+                {
+                    !user && <div className="flex justify-center">
+                        <Button 
+                            className="bg-green-500 px-6 py-2 w-[50%] text-white"
+                            onClick={authModal.onOpen}
+                        >
+                            Log In
+                        </Button>
+                    </div>
+                }
             </div>
         </div>
     )
